@@ -1,4 +1,4 @@
-from exceptions import InvalidLicensePlateError
+from exceptions import InvalidDateError, InvalidMemoryTagError, FutureDateError
 from generator import generate_license_plate
 
 def main():
@@ -9,8 +9,12 @@ def main():
     try:
         license_plate = generate_license_plate(memory_tag, date, license_plates)
         print(f"Your license plate is: {license_plate}")
-    except InvalidLicensePlateError as e:
-        print(f"Error: {e}")
+    except InvalidDateError as e:
+        print(f"Date error: {e}")
+    except FutureDateError as e:
+        print(f"Future date error: {e}")
+    except InvalidMemoryTagError as e:
+        print(f"Memory tag error: {e}")
 
 
 if __name__ == "__main__":
