@@ -1,17 +1,29 @@
 import re
 from datetime import datetime
+from exceptions import FutureDateError, InvalidDateError, InvalidMemoryTagError, InvalidLicensePlateError
 
 def validate_memory_tag(memory_tag: str) -> bool:
     pattern = r"^[A-HK-PR-Y]{2}$"
-    return bool(re.match(pattern, memory_tag.upper()))
+    if memory_tag is None:
+        raise InvalidMemoryTagError("Memory tag can't be empty. Please provide a memory tag.")
+    if re.match(pattern, memory_tag.upper()) is False:
+        raise InvalidMemoryTagError("Provided memory tag is not correct.")
+    return True
 
 def validate_date(date: str) -> bool:
+    if date is None:
+        raise InvalidDateError("Date can't be empty. Please provide a date.")
     try:
-        date_value = datetime.strptime(date, "%d/%m/%Y")
-        return date_value <= datetime.now()
+        date = datetime.strptime(date, "%d/%m/%Y")
+        if date <= datetime.now():
+            raise FutureDateError("Provided date can't be a future date.")
     except ValueError:
-        return False
+        raise InvalidDateError("Date format should be dd/mm/yyyy.")
+    
+    return True
     
 def validate_generated_plate(license_plate: str) -> bool:
     plate_format = r"^[A-HK-PR-Y]{2}\d{2} \W{3}$"
-    return bool(re.match(plate_format, license_plate))
+    if re.match(plate_format, license_plate) is False:
+        raise InvalidLicensePlateError("Generated license plate is incorrect.")
+    return True

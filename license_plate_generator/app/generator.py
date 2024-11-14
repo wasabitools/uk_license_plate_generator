@@ -1,6 +1,8 @@
 import random, string
 from datetime import datetime
-from .validators import validate_memory_tag, validate_date, validate_generated_plate
+
+from exceptions import InvalidDateError, InvalidMemoryTagError
+from validators import validate_memory_tag, validate_date, validate_generated_plate
 
 
 def calculate_age_identifier(date: str) -> str:
@@ -19,12 +21,12 @@ def generate_suffix(length:int = 3) -> str:
 
 def generate_license_plate(memory_tag: str, date: str, license_plates: set) -> str:
     age_identifier = calculate_age_identifier(date)
-    suffix = generate_suffix
+    suffix = generate_suffix()
 
     if not validate_memory_tag(memory_tag):
-        print("Wrong memory tag provided")
+        raise InvalidMemoryTagError("Memory tag is incorrect.")
     if not validate_date(date):
-        print("Wrong date provided")
+        raise InvalidDateError("Date is incorrect.")
 
     license_plate = f"{memory_tag.upper()}{age_identifier} {suffix}"
 
