@@ -14,8 +14,9 @@ def validate_date(date: str) -> bool:
     if date is None:
         raise InvalidDateError("Date can't be empty. Please provide a date.")
     try:
-        date = datetime.strptime(date, "%d/%m/%Y")
-        if date <= datetime.now():
+        date = datetime.strptime(date, "%d/%m/%Y").date()
+        today = datetime.now().date()
+        if date > today:
             raise FutureDateError("Provided date can't be a future date.")
     except ValueError:
         raise InvalidDateError("Date format should be dd/mm/yyyy.")
