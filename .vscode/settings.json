@@ -1,0 +1,5 @@
+{
+    "python.analysis.extraPaths": [
+        "./license_plate_generator/app"
+    ]
+}
